@@ -1,0 +1,57 @@
+from generate_parity_checks import index_to_coordinates
+
+import networkx as nx
+
+def compute_path_lengths(syndrome, l):
+    """calculate the path lenghts between the unsatisfied checks 
+    Input:
+            syndrome: list of unsatisfied checks
+    Output:
+            path_lengths: array with for each element:
+            [checkA, checkB, path_length]
+    """
+    path_lengths = []
+    # for each stabilizer pair, calculate the minimum path length
+    for i, checkA in enumerate(syndrome):
+        xA, yA = index_to_coordinates(checkA) 
+        for checkB in syndrome[i+1:]:
+            xB, yB = index_to_coordinates(checkB)
+            min_row_dif = min((xA - xB) % l, (xB- xA) % l)
+            min_col_dif = min((yA - yB) % l, (yB - yA) % l)
+            path_length = min_row_dif + min_col_dif
+            path_lengths.append((checkA, checkB, path_length))
+    return path_lengths
+
+def compute_matching(syndrome, l):
+    path_lengths = compute_path_lengths(syndrome, l)
+    G = nx.Graph()
+    for edge in path_lengths:
+        G.add_edge(edge[0], edge[1], weight=-edge[2])
+    matching = nx.algorithms.matching.max_weight_matching(G, maxcardinality=True)
+    return matching
+
+def compute_path(checkA, checkB, l):
+    xA, yA = index_to_coordinates(checkA)
+    print(xA)
+    xB, yB = index_to_coordinates(checkB)
+    print(xB)
+    path = []
+    if (xB - xA) % l < (xA - xB) % l:
+        path += [l*l + i for i in range(xA, xB)]
+    else:
+        path += [l*l + i for i in range(xB, xA)]
+    if (yB - yA) % l < (yA - yB) % l:
+        path += [xB + i for i in range(yA, yB)]
+    else:
+        path += [xA + i for i in range(yB, yA)]
+    return path
+
+
+l = 3
+syndrome = [2,4]
+matching = compute_matching(syndrome, l)
+print(matching)
+for checkA, checkB in matching:
+    print(compute_path(checkA, checkB, l))
+
+
