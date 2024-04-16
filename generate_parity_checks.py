@@ -1,13 +1,4 @@
-
-
-l = 3
-
-# row first ordering
-def coordinates_to_index(x, y):
-    return x + y * l
-
-def index_to_coordinates(i):
-    return i % l, i // l 
+from utilities import l, coordinates_to_index, index_to_coordinates, write_matrix_to_file
 
 # There are l^2 X-checks and l^2 Z-checks.
 # There are l^2 vertical qubits and l^2 horizontal qubits.
@@ -16,8 +7,8 @@ def index_to_coordinates(i):
 
 def generate_Hx(l):
     Hx = []
-    for x in range(l):
-        for y in range(l):
+    for y in range(l):
+        for x in range(l):
             vertical_qubit_below = coordinates_to_index(x, (y - 1) % l)
             vertical_qubit_above = coordinates_to_index(x, y)
             horizontal_qubit_on_the_left = l*l + coordinates_to_index((x - 1) % l, y)
@@ -26,13 +17,14 @@ def generate_Hx(l):
             Hx.append(X_check)
     return Hx
 
-# Hx = generate_Hx(l)
-# print(Hx)
+Hx = generate_Hx(l)
+print(Hx)
+write_matrix_to_file(Hx, 'data/Hx_{}.txt'.format(l))
 
 def generate_Hz(l):
     Hz = []
-    for x in range(l):
-        for y in range(l):
+    for y in range(l):
+        for x in range(l):
             vertical_qubit_on_the_left = coordinates_to_index(x, y)
             vertical_qubit_on_the_right = coordinates_to_index((x + 1) % l, y)
             horizontal_qubit_below = l*l + coordinates_to_index(x, y)

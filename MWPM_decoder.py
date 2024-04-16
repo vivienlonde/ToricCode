@@ -1,4 +1,4 @@
-from generate_parity_checks import index_to_coordinates
+from utilities import l, index_to_coordinates, add_mod_two, fill_mod_l
 
 import networkx as nx
 
@@ -32,26 +32,29 @@ def compute_matching(syndrome, l):
 
 def compute_path(checkA, checkB, l):
     xA, yA = index_to_coordinates(checkA)
-    print(xA)
+    # print('xA', xA, 'yA', yA)
     xB, yB = index_to_coordinates(checkB)
-    print(xB)
-    path = []
-    if (xB - xA) % l < (xA - xB) % l:
-        path += [l*l + i for i in range(xA, xB)]
-    else:
-        path += [l*l + i for i in range(xB, xA)]
-    if (yB - yA) % l < (yA - yB) % l:
-        path += [xB + i for i in range(yA, yB)]
-    else:
-        path += [xA + i for i in range(yB, yA)]
+    # print('xB', xB, 'yB', yB)
+    path = [l*l + yA*l + i for i in fill_mod_l(xA, xB, l)]
+    # print('path after x', path)
+    path += [xB + i*l for i in fill_mod_l(yA, yB, l)]
+    # print('path after y', path)
     return path
 
+def decode(syndrome):
 
-l = 3
-syndrome = [2,4]
-matching = compute_matching(syndrome, l)
-print(matching)
-for checkA, checkB in matching:
-    print(compute_path(checkA, checkB, l))
+    matching = compute_matching(syndrome, l)
+    # print('matching:', matching)
+
+    total_path = []
+    for checkA, checkB in matching:
+        # print(checkA, checkB)
+        new_path = compute_path(checkA, checkB, l)
+        # print('new_path:', new_path)
+        total_path = add_mod_two(total_path, new_path)
+        # print('total_path:', total_path)
+    # print('total_path:', total_path)
+    return total_path
+
 
 
