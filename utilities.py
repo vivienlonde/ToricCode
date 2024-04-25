@@ -1,4 +1,4 @@
-l = 7
+l = 15
 
 # row first ordering
 def coordinates_to_index(x, y):

@@ -73,21 +73,3 @@ plt.yticks([i for i in range(l)])
 plt.show()
 
 
-
-def generate_X_logicals(l):
-    horizontal_X_logical = [i for i in range(l)]
-    vertical_X_logical = [l*i for i in range(l*l, l*l + l)]
-    X_logicals = [horizontal_X_logical, vertical_X_logical]
-    return X_logicals
-
-# X_logicals = generate_X_logicals(l)
-# print(X_logicals)
-
-def generate_Z_logicals(l):
-    horizontal_Z_logical = [i for i in range(l*l, l*l + l)]
-    vertical_Z_logical = [l*i for i in range(l)]
-    Z_logicals = [horizontal_Z_logical, vertical_Z_logical]
-    return Z_logicals
-
-# Z_logicals = generate_Z_logicals(l)
-# print(Z_logicals)

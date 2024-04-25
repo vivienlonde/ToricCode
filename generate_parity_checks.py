@@ -17,9 +17,9 @@ def generate_Hx(l):
             Hx.append(X_check)
     return Hx
 
-Hx = generate_Hx(l)
-print(Hx)
-write_matrix_to_file(Hx, 'data/Hx_{}.txt'.format(l))
+# Hx = generate_Hx(l)
+# print(Hx)
+# write_matrix_to_file(Hx, 'data/Hx_{}.txt'.format(l))
 
 def generate_Hz(l):
     Hz = []
@@ -36,6 +36,7 @@ def generate_Hz(l):
 # Hz = generate_Hz(l)
 # print(Hz)
 
+# Verify that the two parity check matrices are orthogonal (i.e. the measurements corresponding to checks commute).
 # for X_check in Hx:
 #     for Z_check in Hz:
 #         w = 0
@@ -43,22 +44,5 @@ def generate_Hz(l):
 #             if q in Z_check:
 #                 w += 1
 #         print(w)
-
-
-# Convert Hx and Hz to dense matrices.
-# Compute their row echelon forms (Gaussion elimination).
-# Generate a random error and visualize it.
-# Visualize the syndrome.
-# Visualize a recovery.
-# Compute wether there was a logical error.
-# 
-# syndrome computation from parity check matrix
-# total error operator is always a cycle (since it has zero syndrome)
-# this operator is trivial iff it is a boundary.
-# Possible to check its scalar product with the other logical operators.
-# -> no need for Gaussian elimination.
-# -> no need for dense parity check matrices.
-# Give the two other logical operators explicitely manually   
-
 
 
